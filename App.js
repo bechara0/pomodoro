@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform, SafeAreaView } from "react-native";
+import { useState } from "react";
+import Header from "./src/components/Header";
+import { Timer } from "./src/components/Timer";
+
+const colors = ["#F7DC6F", "#A2D9CE", "#D7BDE2"];
 
 export default function App() {
+  const [isWorking, setIsWorking] = useState(false);
+  const [time, setTime] = useState(25 * 60);
+  const [currentTime, setCurrentTime] = useState("POMO" | "SHORT" | "BREACK");
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors[currentTime] }]}
+    >
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 15,
+          paddingTop: Platform.OS === "android" && 30,
+        }}
+      >
+        <Text style={styles.text}>Pomodoro</Text>
+        <Header
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          setTime={setTime}
+        />
+        <Timer time={time} />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 32,
+    fontWeight: "bold",
   },
 });
